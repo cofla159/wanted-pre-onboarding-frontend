@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function Home() {
   const navigate = useNavigate();
@@ -10,11 +10,13 @@ function Home() {
   });
 
   return (
-    <>
+    <div className="flex-col">
+      <div>로그인</div>
       <input type="email" />
       <input type="password" />
       <input type="submit" />
-    </>
+      <Link to="signup">회원가입</Link>
+    </div>
   );
 }
 
