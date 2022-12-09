@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { React, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 
 function Signup() {
@@ -11,6 +13,7 @@ function Signup() {
     email: false,
     password: false,
   });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setInputValue({
@@ -33,18 +36,28 @@ function Signup() {
     }
   };
   const handleSubmit = async (e) => {
-    e.prevertDefault();
-    // console.log(e.target);
-    // try {
-    //   const response = await axios.post(process.env.REACT_APP_API_ADDRESS+'/auth/signup' , {
-    //     email,
-    //     password,
-    //   });
-    //   window.localStorage.setItem('token', response.access_token);
-    //   alert('success', '환영합니다!');
-    // } catch (error) {
-    //   alert('fail', `로그인에 실패했습니다. 다시 시도해주세요: ${error}`);
-    // }
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        process.env.REACT_APP_API_ADDRESS + "auth/signup",
+        {
+          email: inputValue.email,
+          password: inputValue.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      window.localStorage.setItem("token", response.access_token);
+      alert(`환영합니다, ${inputValue.email}님!`);
+      navigate("/");
+    } catch (error) {
+      alert(
+        `회원가입에 실패했습니다. 다시 시도해주세요: ${error.response.data.message}`
+      );
+    }
   };
   return (
     <div className="flex flex-col">
