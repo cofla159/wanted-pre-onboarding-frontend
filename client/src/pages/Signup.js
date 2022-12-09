@@ -50,7 +50,7 @@ function Signup() {
           },
         }
       );
-      window.localStorage.setItem("token", response.access_token);
+      window.localStorage.setItem("token", response.data.access_token);
       alert(`환영합니다, ${inputValue.email}님!`);
       navigate("/");
     } catch (error) {
