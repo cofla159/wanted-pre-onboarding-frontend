@@ -17,6 +17,20 @@ function Signup() {
       ...inputValue,
       [e.target.name]: e.target.value,
     });
+    if (e.target.name === "email") {
+      if (e.target.value.includes("@")) {
+        setIsValidate({ ...isValidate, email: true });
+      } else {
+        setIsValidate({ ...isValidate, email: false });
+      }
+    }
+    if (e.target.name === "password") {
+      if (e.target.value.length >= 8) {
+        setIsValidate({ ...isValidate, password: true });
+      } else {
+        setIsValidate({ ...isValidate, password: false });
+      }
+    }
   };
   const handleSubmit = async (e) => {
     e.prevertDefault();
@@ -60,7 +74,10 @@ function Signup() {
         ) : (
           <div className="text-red-500">비밀번호는 8자 이상이어야 합니다.</div>
         )}
-        <button type="submit" disabled>
+        <button
+          type="submit"
+          disabled={!(isValidate.email && isValidate.password)}
+        >
           확인
         </button>
       </form>
