@@ -32,6 +32,33 @@ function Todo() {
     getTodos();
   }, []);
 
+  const createHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        process.env.REACT_APP_API_ADDRESS + "todos",
+        {
+          todo: createContent,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      getTodos();
+    } catch (error) {
+      alert(
+        `새로운 목록 추가에 실패했습니다. 다시 시도해주세요: ${error.response.data.message}`
+      );
+    }
+  };
+  console.log(todos);
+  const handleChange = (e) => {
+    setCreateContent(e.target.value);
+  };
+
   return (
     <>
       <div className="text-2xl">Todo List</div>
@@ -48,6 +75,18 @@ function Todo() {
           </>
         );
       })}
+
+      <form onSubmit={createHandler}>
+        <input
+          type="text"
+          className="border-2 border-black"
+          value={createContent}
+          onChange={handleChange}
+        />
+        <button type="submit" className="border-2 border-black">
+          추가
+        </button>
+      </form>
     </>
   );
 }
