@@ -2,7 +2,7 @@ import { React } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Todo from "./pages/Todo";
-import Signup from "./pages/Signup";
+import Join from "./pages/Join";
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/todo" element={<Todo />} />
-            <Route path="/signup" element={<Signup />} />
+            <Route path="/join" element={<Join />} />
           </Routes>
         </div>
       </BrowserRouter>

@@ -1,8 +1,14 @@
-import { React, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function Signup() {
+function Login() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (window.localStorage.getItem("token")) {
+      navigate("/todo");
+    }
+  });
   const [inputValue, setInputValue] = useState({
     email: "",
     password: "",
@@ -11,7 +17,6 @@ function Signup() {
     email: false,
     password: false,
   });
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setInputValue({
@@ -37,7 +42,7 @@ function Signup() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        process.env.REACT_APP_API_ADDRESS + "auth/signup",
+        process.env.REACT_APP_API_ADDRESS + "auth/signin",
         {
           email: inputValue.email,
           password: inputValue.password,
@@ -50,50 +55,48 @@ function Signup() {
       );
       window.localStorage.setItem("token", response.data.access_token);
       alert(`환영합니다, ${inputValue.email}님!`);
-      navigate("/");
+      navigate("/todo");
     } catch (error) {
       alert(
-        `회원가입에 실패했습니다. 다시 시도해주세요: ${error.response.data.message}`
+        `로그인에 실패했습니다. 다시 시도해주세요: ${error.response.data.message}`
       );
     }
   };
+
   return (
-    <div className="flex flex-col">
-      <div>회원가입</div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          name="email"
-          value={inputValue.email}
-          onChange={handleChange}
-        />
-        {isValidate.email ? (
-          ""
-        ) : (
-          <div className="text-red-500">
-            @이 포함된 이메일 주소를 입력해주세요.
-          </div>
-        )}
-        <input
-          type="password"
-          name="password"
-          value={inputValue.password}
-          onChange={handleChange}
-        />
-        {isValidate.password ? (
-          ""
-        ) : (
-          <div className="text-red-500">비밀번호는 8자 이상이어야 합니다.</div>
-        )}
-        <button
-          type="submit"
-          disabled={!(isValidate.email && isValidate.password)}
-        >
-          확인
-        </button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input
+        type="email"
+        name="email"
+        value={inputValue.email}
+        onChange={handleChange}
+      />
+      {isValidate.email ? (
+        ""
+      ) : (
+        <div className="text-red-500">
+          @이 포함된 이메일 주소를 입력해주세요.
+        </div>
+      )}
+      <input
+        type="password"
+        name="password"
+        value={inputValue.password}
+        onChange={handleChange}
+      />
+      {isValidate.password ? (
+        ""
+      ) : (
+        <div className="text-red-500">비밀번호는 8자 이상이어야 합니다.</div>
+      )}
+      <button
+        type="submit"
+        disabled={!(isValidate.email && isValidate.password)}
+      >
+        확인
+      </button>
+    </form>
   );
 }
 
-export default Signup;
+export default Login;
