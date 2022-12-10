@@ -21,6 +21,7 @@ function Todo() {
         }
       );
       setTodos(response.data);
+      console.log(response.data);
     } catch (error) {
       alert(
         `목록을 불러올 수 없습니다. 다시 접속해주세요: ${error.response.data.message}`
@@ -95,12 +96,27 @@ function Todo() {
     }
   };
 
+  const deleteHandler = async (e, id) => {
+    try {
+      await axios.delete(process.env.REACT_APP_API_ADDRESS + `todos/${id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      getTodos();
+    } catch (error) {
+      alert(
+        `삭제 처리에 실패했습니다. 다시 시도해주세요: ${error.response.data.message}`
+      );
+    }
+  };
+
   return (
     <>
       <div className="text-2xl">Todo List</div>
       {todos?.map((todo) => {
         return (
-          <div key={todo.id}>
+          <form key={todo.id}>
             <input
               type="checkbox"
               checked={todo.isCompleted}
@@ -108,7 +124,14 @@ function Todo() {
               onChange={completeHandler}
             />
             {todo.todo}
-          </div>
+            <button
+              type="button"
+              onClick={(e) => deleteHandler(e, todo.id)}
+              className="border-2 border-black"
+            >
+              삭제
+            </button>
+          </form>
         );
       })}
 
