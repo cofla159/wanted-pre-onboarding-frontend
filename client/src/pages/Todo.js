@@ -35,7 +35,7 @@ function Todo() {
   const createHandler = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
+      await axios.post(
         process.env.REACT_APP_API_ADDRESS + "todos",
         {
           todo: createContent,
@@ -54,9 +54,45 @@ function Todo() {
       );
     }
   };
-  console.log(todos);
+
   const handleChange = (e) => {
     setCreateContent(e.target.value);
+  };
+
+  const completeHandler = (e) => {
+    let changedTodo = {};
+    const newTodos = todos.map((todo) => {
+      if (todo.id === Number(e.target.id)) {
+        changedTodo = { ...todo, isCompleted: e.target.checked };
+        return changedTodo;
+      }
+      return todo;
+    });
+    setTodos(newTodos);
+    updateTodos(changedTodo);
+  };
+
+  const updateTodos = async ({ id, todo, isCompleted }) => {
+    try {
+      await axios.put(
+        process.env.REACT_APP_API_ADDRESS + `todos/${id}`,
+        {
+          todo,
+          isCompleted,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      getTodos();
+    } catch (error) {
+      alert(
+        `완료 처리에 실패했습니다. 다시 시도해주세요: ${error.response.data.message}`
+      );
+    }
   };
 
   return (
@@ -64,15 +100,15 @@ function Todo() {
       <div className="text-2xl">Todo List</div>
       {todos?.map((todo) => {
         return (
-          <>
+          <div key={todo.id}>
             <input
               type="checkbox"
               checked={todo.isCompleted}
-              key={todo.id}
               id={todo.id}
+              onChange={completeHandler}
             />
-            <div>{todo.todo}</div>
-          </>
+            {todo.todo}
+          </div>
         );
       })}
 
