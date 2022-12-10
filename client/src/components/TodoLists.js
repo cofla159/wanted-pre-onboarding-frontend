@@ -48,6 +48,7 @@ function Todo() {
           },
         }
       );
+      setCreateContent("");
       getTodos();
     } catch (error) {
       alert(
