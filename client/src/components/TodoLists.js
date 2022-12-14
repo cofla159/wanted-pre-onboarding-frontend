@@ -1,4 +1,4 @@
-import { React, useEffect, useRef, useState } from "react";
+import { React, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import TodoItem from "./TodoItem";
@@ -29,7 +29,7 @@ function Todo() {
   useEffect(() => {
     if (!accessToken) navigate("/");
     getTodos();
-  }, []);
+  });
 
   const createHandler = async (e) => {
     e.preventDefault();
@@ -91,7 +91,7 @@ function Todo() {
       getTodos();
     } catch (error) {
       alert(
-        `완료 처리에 실패했습니다. 다시 시도해주세요: ${error.response.data.message}`
+        `수정에 실패했습니다. 다시 시도해주세요: ${error.response.data.message}`
       );
     }
   };
@@ -117,9 +117,9 @@ function Todo() {
         return (
           <TodoItem
             todo={todo}
-            deleteHandler={deleteHandler}
             completeHandler={completeHandler}
             updateTodo={updateTodo}
+            deleteHandler={deleteHandler}
           />
         );
       })}
