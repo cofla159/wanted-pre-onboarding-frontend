@@ -1,8 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
-import { React, useCallback, useEffect, useState } from "react";
+import { React, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import TodoItem from "./TodoItem";
 
 function Todo() {
   const navigate = useNavigate();
@@ -21,7 +20,6 @@ function Todo() {
         }
       );
       setTodos(response.data);
-      console.log(response.data);
     } catch (error) {
       alert(
         `목록을 불러올 수 없습니다. 다시 접속해주세요: ${error.response.data.message}`
@@ -35,6 +33,7 @@ function Todo() {
 
   const createHandler = async (e) => {
     e.preventDefault();
+    if (!createContent.length) return;
     try {
       await axios.post(
         process.env.REACT_APP_API_ADDRESS + "todos",
@@ -57,8 +56,8 @@ function Todo() {
     }
   };
 
-  const handleChange = (e) => {
-    setCreateContent(e.target.value);
+  const handleChange = (e, setFunction) => {
+    setFunction(e.target.value);
   };
 
   const completeHandler = (e) => {
@@ -71,10 +70,10 @@ function Todo() {
       return todo;
     });
     setTodos(newTodos);
-    updateTodos(changedTodo);
+    updateTodo(changedTodo);
   };
 
-  const updateTodos = async ({ id, todo, isCompleted }) => {
+  const updateTodo = async ({ id, todo, isCompleted }) => {
     try {
       await axios.put(
         process.env.REACT_APP_API_ADDRESS + `todos/${id}`,
@@ -97,7 +96,7 @@ function Todo() {
     }
   };
 
-  const deleteHandler = async (e, id) => {
+  const deleteHandler = async (id) => {
     try {
       await axios.delete(process.env.REACT_APP_API_ADDRESS + `todos/${id}`, {
         headers: {
@@ -116,22 +115,12 @@ function Todo() {
     <>
       {todos?.map((todo) => {
         return (
-          <form key={todo.id}>
-            <input
-              type="checkbox"
-              checked={todo.isCompleted}
-              id={todo.id}
-              onChange={completeHandler}
-            />
-            {todo.todo}
-            <button
-              type="button"
-              onClick={(e) => deleteHandler(e, todo.id)}
-              className="border-2 border-black"
-            >
-              삭제
-            </button>
-          </form>
+          <TodoItem
+            todo={todo}
+            deleteHandler={deleteHandler}
+            completeHandler={completeHandler}
+            updateTodo={updateTodo}
+          />
         );
       })}
 
@@ -140,7 +129,7 @@ function Todo() {
           type="text"
           className="border-2 border-black"
           value={createContent}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e, setCreateContent)}
         />
         <button type="submit" className="border-2 border-black">
           추가
