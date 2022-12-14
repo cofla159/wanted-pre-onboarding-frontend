@@ -96,25 +96,26 @@ function Todo() {
 
   return (
     <>
-      {todos?.map((todo) => {
-        return (
-          <TodoItem
-            todo={todo}
-            updateTodo={updateTodo}
-            deleteHandler={deleteHandler}
-            key={todo.id}
-          />
-        );
-      })}
-
+      <div className="flex flex-col items-start gap-2 my-4">
+        {todos?.map((todo) => {
+          return (
+            <TodoItem
+              todo={todo}
+              updateTodo={updateTodo}
+              deleteHandler={deleteHandler}
+              key={todo.id}
+            />
+          );
+        })}
+      </div>
       <form onSubmit={createHandler}>
         <input
           type="text"
-          className="border-2 border-black"
+          className="border-2 rounded-xl"
           value={createContent}
           onChange={(e) => setCreateContent(e.target.value)}
         />
-        <button type="submit" className="border-2 border-black">
+        <button type="submit" className="bg-slate-200 rounded-md p-1 ml-2">
           추가
         </button>
       </form>

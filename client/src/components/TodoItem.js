@@ -5,7 +5,7 @@ const TodoItem = ({ todo, updateTodo, deleteHandler }) => {
   const [updateContent, setUpdateContent] = useState(todo.todo);
 
   return (
-    <form>
+    <form className="flex gap-2 w-full">
       <input
         type="checkbox"
         checked={todo.isCompleted}
@@ -24,45 +24,53 @@ const TodoItem = ({ todo, updateTodo, deleteHandler }) => {
               setUpdateContent(e.target.value);
             }}
           />
-          <button
-            type="button"
-            className="border-2 border-black"
-            onClick={() => {
-              updateTodo({
-                id: todo.id,
-                todo: updateContent,
-                isCompleted: todo.isCompleted,
-              });
-              setEditing(false);
-            }}
-          >
-            완료
-          </button>
-          <button
-            type="button"
-            className="border-2 border-black"
-            onClick={() => setEditing(false)}
-          >
-            취소
-          </button>
+          <div>
+            <button
+              type="button"
+              className="bg-slate-200 rounded-md mr-2"
+              onClick={() => {
+                updateTodo({
+                  id: todo.id,
+                  todo: updateContent,
+                  isCompleted: todo.isCompleted,
+                });
+                setEditing(false);
+              }}
+            >
+              완료
+            </button>
+            <button
+              type="button"
+              className="bg-slate-200 rounded-md"
+              onClick={() => setEditing(false)}
+            >
+              취소
+            </button>
+          </div>
         </>
       ) : (
         <>
-          {todo.todo}
-          <button
-            type="button"
-            onClick={() => setEditing(true)}
-            className="border-2 border-black"
+          <span
+            className={todo.isCompleted ? "line-through text-slate-400" : ""}
           >
-            수정
-          </button>
-          <button
-            type="button"
-            onClick={(e) => deleteHandler(todo.id)}
-            className="border-2 border-black"
-          >
-            삭제
-          </button>
+            {todo.todo}
+          </span>
+          <div>
+            <button
+              type="button"
+              onClick={() => setEditing(true)}
+              className="bg-slate-200 rounded-md mr-2"
+            >
+              수정
+            </button>
+            <button
+              type="button"
+              onClick={(e) => deleteHandler(todo.id)}
+              className="bg-slate-200 rounded-md"
+            >
+              삭제
+            </button>
+          </div>
         </>
       )}
     </form>

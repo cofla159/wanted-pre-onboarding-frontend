@@ -64,34 +64,43 @@ function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="email"
-        name="email"
-        value={inputValue.email}
-        onChange={handleChange}
-      />
-      {isValidate.email ? (
-        ""
-      ) : (
-        <div className="text-red-500">
-          @이 포함된 이메일 주소를 입력해주세요.
-        </div>
-      )}
-      <input
-        type="password"
-        name="password"
-        value={inputValue.password}
-        onChange={handleChange}
-      />
-      {isValidate.password ? (
-        ""
-      ) : (
-        <div className="text-red-500">비밀번호는 8자 이상이어야 합니다.</div>
-      )}
+    <form onSubmit={handleSubmit} className="flex flex-row gap-2">
+      <div className="flex flex-col gap-2">
+        <input
+          type="email"
+          name="email"
+          value={inputValue.email}
+          onChange={handleChange}
+          className="w-full border-2 rounded-xl"
+        />
+        {isValidate.email ? (
+          ""
+        ) : (
+          <div className="text-red-500 text-xs">
+            @이 포함된 이메일 주소를 입력해주세요.
+          </div>
+        )}
+        <input
+          type="password"
+          name="password"
+          value={inputValue.password}
+          onChange={handleChange}
+          className="w-full border-2 rounded-xl"
+        />
+        {isValidate.password ? (
+          ""
+        ) : (
+          <div className="text-red-500 text-xs">
+            비밀번호는 8자 이상이어야 합니다.
+          </div>
+        )}
+      </div>
       <button
         type="submit"
         disabled={!(isValidate.email && isValidate.password)}
+        className={`px-3 bg-slate-300 rounded-md ${
+          !(isValidate.email && isValidate.password) ? "cursor-not-allowed" : ""
+        }`}
       >
         확인
       </button>
