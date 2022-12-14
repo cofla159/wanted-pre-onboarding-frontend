@@ -120,6 +120,7 @@ function Todo() {
             completeHandler={completeHandler}
             updateTodo={updateTodo}
             deleteHandler={deleteHandler}
+            key={todo.id}
           />
         );
       })}
