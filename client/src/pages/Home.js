@@ -8,7 +8,7 @@ function Home() {
       <div className="flex flex-col">
         <div>로그인</div>
         <Login />
-        <Link to="signup">회원가입</Link>
+        <Link to="join">회원가입</Link>
       </div>
     </>
   );
