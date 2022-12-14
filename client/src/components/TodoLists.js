@@ -56,23 +56,6 @@ function Todo() {
     }
   };
 
-  const handleChange = (e, setFunction) => {
-    setFunction(e.target.value);
-  };
-
-  const completeHandler = (e) => {
-    let changedTodo = {};
-    const newTodos = todos.map((todo) => {
-      if (todo.id === Number(e.target.id)) {
-        changedTodo = { ...todo, isCompleted: e.target.checked };
-        return changedTodo;
-      }
-      return todo;
-    });
-    setTodos(newTodos);
-    updateTodo(changedTodo);
-  };
-
   const updateTodo = async ({ id, todo, isCompleted }) => {
     try {
       await axios.put(
@@ -117,7 +100,6 @@ function Todo() {
         return (
           <TodoItem
             todo={todo}
-            completeHandler={completeHandler}
             updateTodo={updateTodo}
             deleteHandler={deleteHandler}
             key={todo.id}
@@ -130,7 +112,7 @@ function Todo() {
           type="text"
           className="border-2 border-black"
           value={createContent}
-          onChange={(e) => handleChange(e, setCreateContent)}
+          onChange={(e) => setCreateContent(e.target.value)}
         />
         <button type="submit" className="border-2 border-black">
           추가
